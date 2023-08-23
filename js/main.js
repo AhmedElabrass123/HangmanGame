@@ -1,70 +1,118 @@
-let squareItems = document.querySelectorAll(".square");
-let info=document.querySelector(".info");
-let boardArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
-let currentTurn="X";
-let gameOver=false;
-squareItems.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    if (gameOver)return;
-    let value=item.getAttribute("value");
-    let index=value-1
+let letters="abcdefghigklmnopqrstuvwxyz";
+let lettersArray=Array.from(letters);
+let letterContainer=document.querySelector(".theLetters")
+lettersArray.forEach((letter)=>{
+    // create span for letter
+    let span=document.createElement("span")
+    // create textNode.
+    let theLetter=document.createTextNode(letter)
+    span.appendChild(theLetter);
+    span.className="letterBox";
+    letterContainer.appendChild(span)
+    // console.log(letterContainer)
 
-    if(boardArray[index]=="X" || boardArray[index]=="O")return;
-    // FILLING THE VALUE VIVUALY
-    let squareContent=document.querySelector(`.square[value="${value}"]`)
-    squareContent.innerHTML=currentTurn
-    
-    // FILLING THE VALUE IN ARRAY
-    boardArray[index]=currentTurn
-    console.log(boardArray)
-    determineBoard()
-    if(currentTurn=="X"){ 
-        currentTurn="O"
-    }
-    else{
-        currentTurn="X"
-    }
-    info.innerText=`${currentTurn} turn`;
-  });
-  function determineBoard(){
-    let winner=currentTurn=="O" ? "O" : "X"
-
-    if(
-        (boardArray[0]==boardArray[1] && boardArray[1]==boardArray[2]) ||
-        (boardArray[0]==boardArray[3] && boardArray[3]==boardArray[6]) ||
-        (boardArray[6]==boardArray[7] && boardArray[7]==boardArray[8]) ||
-        (boardArray[1]==boardArray[4] && boardArray[4]==boardArray[7]) ||
-        (boardArray[2]==boardArray[5] && boardArray[5]==boardArray[8]) ||
-        (boardArray[3]==boardArray[4] && boardArray[4]==boardArray[5]) ||
-        (boardArray[2]==boardArray[4] && boardArray[4]==boardArray[6]) ||
-        (boardArray[0]==boardArray[4] && boardArray[4]==boardArray[8]) 
-        )
-        {
-            gameOver=true
-          alert(`${winner} Won !`)
-
-    }
-    let isDraw=true; //تعادل
-    boardArray.forEach((item)=>{
-        if(item !="X" && item !="O"){
-            isDraw=false;
-        }
-    })
-    if(isDraw){
-        gameOver=true;
-        alert("Draw => تعادل")
-    }
-  }
- 
-});
-let resetBtn=document.querySelector(".resetBtn");
-resetBtn.addEventListener("click",(e)=>{
-    squareItems.forEach((item) => {
-      item.innerHTML=""
-    })
-    boardArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
-    gameOver=false;
-    currentTurn="X"
-    info.innerText=`${currentTurn} turn`;
- 
 })
+
+// objects of words + categories
+const words={
+    programming:["php","javascript","css","html","c++","python","java","c#"],
+    movies:["Spider Man","Monkey King","Interstellar","Whiplash","Coco","Up"],
+    people:["Albert Einstein","Hitchcock","Alexander","Cleopatra","Mahatam Ghandi"],
+    countries:["yemen","Qatar","Egypt","Bahrain","Syria","Palestine"]
+}
+// get random property 
+let allKeys=Object.keys(words);
+
+//random keys
+let randomPropNumber=Math.floor(Math.random()*allKeys.length);
+// category Num
+let randomPropName=allKeys[randomPropNumber];
+// category Word
+let randomPropValues=words[randomPropName];
+console.log(randomPropValues)
+//random word Num
+let randomWordNumber=Math.floor(Math.random()*randomPropValues.length);
+//random word Value
+let randomWordValue=randomPropValues[randomWordNumber]
+console.log(randomWordValue)
+
+
+// =============category info========
+let categoryInfo=document.querySelector(".category span")
+categoryInfo.innerText=`${randomPropName}${"    "}`;
+
+
+// ===============================Select letterGuess===========
+
+let lettersGuessContainer=document.querySelector(".lettersGuess");
+// convert Chossen Word To Array========
+let letterAndSapce=Array.from(randomWordValue);
+console.log(letterAndSapce)
+// =====create spans depend on word======
+letterAndSapce.forEach((letter)=>{
+    let span=document.createElement("span");
+    // if letter is space
+    if(letter === " "){
+        span.className="hasSapce"
+    }
+    lettersGuessContainer.appendChild(span)
+})
+// ===Handle clicking on element=======
+
+// ====Select All spans from letterGuess
+let guessSpans=document.querySelectorAll(".lettersGuess span");
+// set Wrong Attemps.
+let wrongAttemps=0;
+let theDraw=document.querySelector(".hangmanDraw")
+document.addEventListener("click",(e)=>{
+    //  set the status
+    let theStatus=false;
+    if(e.target.className=="letterBox"){
+        e.target.classList.add("clicked")
+        // get letter clicked
+        let letterClicked=e.target.innerText.toLowerCase();
+        let choosenWord=Array.from(randomWordValue);
+        choosenWord.forEach((wordLetter,letterIndex)=>{
+            if(letterClicked==wordLetter.toLowerCase()){
+                theStatus=true;
+                guessSpans.forEach((span,spanIndex)=>{
+                    if(letterIndex==spanIndex){
+                        span.innerText=wordLetter;
+
+                    }
+                })
+            }
+        })
+
+        if(theStatus !== true){
+            wrongAttemps++;
+            // Add class worng on draw element
+            theDraw.classList.add(`wrong-${wrongAttemps}`);
+            // play fail sound
+            document.getElementById("fail").play();
+            if(wrongAttemps === 8){
+                endGame();
+                letterContainer.classList.add("finished")
+            }
+        }
+        else{
+            // play sucess sound
+            document.getElementById("success").play();
+
+        }
+
+    }
+
+})
+
+// endGame function
+function endGame(){
+    // Create Popup
+    let div=document.createElement("div")
+    div.className="popup"
+    // create text
+    let text=document.createTextNode(`Game Over , The Word is "${randomWordValue}"`)
+    div.appendChild(text);
+    // Append to the body=========
+    document.body.appendChild(div)
+}

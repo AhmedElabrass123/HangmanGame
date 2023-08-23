@@ -11,70 +11,50 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-    <title>Tic Tac Teo Game</title>
+    <title>Hangman Game</title>
 </head>
 
 <body>
-    <main>
-        <div class="Content">
-            <!-- =======start header====== -->
-            <div id="header">
-                <h3 class="info">
-                    X turn
+   <div class="container">
+        <div class="gameInfo">
+            <div class="gameName">Hangman</div>
+            <div class="category">
+                 Word From : <span></span>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-5 col-md-6 col-12">
+                <div class="hangmanDraw w-100">
+                    <div class="theDraw">
+                        <div class="theStand"></div>
+                        <div class="theHang"></div>
+                        <div class="theRope"></div>
+                        <div class="theMan">
+                            <div class="theHead"></div>
+                            <div class="theBody"></div>
+                            <div class="theHands"></div>
+                            <div class="theLegs"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-lg-7 col-md-6 col-12">
+                <div class="theLetters w-100">
+
+                </div>
             </div>
 
-            <!-- =======end header====== -->
-            <!-- =======start Shape====== -->
-            <div id="shape">
-                <!-- ===Row1=== -->
-                <div class="square" value="1" style="border-top: none;
-                border-left: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="2" style="border-top: none;
-                border-left: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="3" style="border-top: none;
-                border-left: none;border-right: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <!-- ===Row2=== -->
-                <div class="square" value="4" style="border-top: none;
-                border-left: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="5" style="border-top: none;
-                border-left: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="6" style="border-top: none;
-                border-left: none;border-right: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <!-- ===Row3=== -->
-                <div class="square" value="7" style="border-top: none;
-                border-left: none;border-bottom: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="8" style="border-top: none;
-                border-left: none;border-bottom: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-                <div class="square" value="9" style="border-top:none;
-                border-left: none;border-right: none;border-bottom: none;">
-                    <h4 class="squareContent"></h4>
-                </div>
-            </div>
-            <!-- =======end Shape====== -->
-            <!-- ==Btn reset======= -->
-            <div class="theBtn">
-                <button class="resetBtn text-white fs-4" 
-                id="resetBtn">Reset</button>
-            </div>
-            <!-- ==Btn reset======= -->
+            
         </div>
-    </main>
+        <hr>
+        <div class="lettersGuess">
+
+        </div>
+   </div>
+<audio src="./effects/fail.mp3" id="fail"></audio>
+<audio src="./effects/success.mp3" id="success"></audio>
 
     <script src="js/all.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
